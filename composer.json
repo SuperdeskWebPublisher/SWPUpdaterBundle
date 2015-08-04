@@ -24,9 +24,8 @@
         "phpunit/php-code-coverage": "@stable"
     },
     "autoload": {
-        "psr-4": { "SWP\\UpdaterBundle": "" }
+        "psr-4": { "SWP\\UpdaterBundle\\": "" }
     },
-    "target-dir": "SWP/UpdaterBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
