@@ -11,7 +11,6 @@
  * @copyright 2015 Sourcefabric z.ú.
  * @license http://www.superdesk.org/license
  */
-
 namespace SWP\UpdaterBundle\Manager;
 
 use SWP\UpdaterBundle\Client\ClientInterface;
@@ -135,9 +134,9 @@ abstract class AbstractManager implements ManagerInterface
         try {
             $filePath = $this->tempDir.'/'.$name.'.zip';
             if (!file_exists($filePath)) {
-                $this->client->get($fromUrl, [
+                $this->client->get($fromUrl, array(
                     'save_to' => $filePath,
-                ]);
+                ));
 
                 $this->addLogInfo('Successfully downloaded update file: '.$filePath);
 

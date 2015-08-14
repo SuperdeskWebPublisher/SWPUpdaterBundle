@@ -62,6 +62,7 @@ class UpdateManager extends AbstractManager
             )
         );
 
+        $response = $this->parseJson($response);
         if (isset($response['_items']) && !empty($response['_items'])) {
             foreach ($response['_items'] as $key => $resource) {
                 foreach ($resource as $value) {
@@ -105,7 +106,7 @@ class UpdateManager extends AbstractManager
     {
         if (!$this->latestUpdate) {
             $response = $this->client->call(self::LATEST_VERSION_ENDPOINT);
-            $this->latestUpdate = new UpdatePackage($response);
+            $this->latestUpdate = new UpdatePackage($this->parseJson($response));
         }
 
         return $this->latestUpdate;
@@ -171,6 +172,9 @@ class UpdateManager extends AbstractManager
 
     /**
      * Updates the core by calling Updater "update" command.
+     *
+     * @throws NotFoundHttpException When update package not found
+     * @throws \RuntimeException     When upgrading failed
      */
     public function updateCore()
     {
@@ -194,7 +198,7 @@ class UpdateManager extends AbstractManager
             ));
 
             if ($result !== 0) {
-                throw new \Exception('Could not update the instance.');
+                throw new \RuntimeException('Could not update the instance.');
             }
 
             $this->addLogInfo('Successfully updated application\'s core...');
@@ -208,5 +212,15 @@ class UpdateManager extends AbstractManager
         $this->addLogInfo('Started cleaning up...');
         unlink($packagePath);
         $this->addLogInfo('Successfully cleaned up...');
+    }
+
+    private function parseJson($jsonString)
+    {
+        $jsonObj = json_decode($jsonString, true);
+        if (is_null($jsonObj) || json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Response body is not in JSON format.', json_last_error());
+        }
+
+        return $jsonObj;
     }
 }

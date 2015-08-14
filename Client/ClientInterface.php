@@ -22,11 +22,17 @@ interface ClientInterface
      * Makes an API call to an external server
      * to get the data from.
      *
-     * @param string $endpoint  API endpoint to call
-     * @param array  $arguments An array of arguments
-     * @param arrat  $options   An array of extra parameters
+     * @param string $endpoint     API endpoint to call
+     * @param array  $arguments    An array of arguments
+     * @param arrat  $options      An array of extra parameters
+     * @param bool   $fullResponse Return full reponse as array
      *
      * @return array Response from the server
      */
-    public function call($endpoint = '/', array $arguments = array(), array $options = array());
+    public function call(
+        $endpoint = '/',
+        array $arguments = array(),
+        array $options = array(),
+        $fullResponse = false
+    );
 }

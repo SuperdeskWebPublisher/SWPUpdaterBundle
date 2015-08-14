@@ -1,6 +1,6 @@
 services:
     swp_updater.client:
-        class: SWP\UpdaterBundle\Client\RemoteClient
+        class: SWP\UpdaterBundle\Client\GuzzleClient
         arguments: ["%swp_updater.client%", "%swp_updater.client.options%"]
 
     swp_updater.version:

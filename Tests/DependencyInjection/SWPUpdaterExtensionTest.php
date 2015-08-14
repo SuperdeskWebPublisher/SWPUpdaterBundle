@@ -28,7 +28,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $curlOptions = array(
             'curl' => array(
-                '10203' => 'updates.sourcefabric.org:localhost',
+                '10203' => 'somehost:localhost',
             ),
         );
 

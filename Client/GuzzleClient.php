@@ -14,16 +14,29 @@
 namespace SWP\UpdaterBundle\Client;
 
 use GuzzleHttp\Client as BaseClient;
-use GuzzleHttp\Exception\ConnectException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Remote Client class.
  * Allows to fetch data from the remote update server.
  */
-class RemoteClient extends BaseClient implements ClientInterface
+class GuzzleClient extends BaseClient implements ClientInterface
 {
-    private $options = array();
+    /**
+     * Default request options.
+     *
+     * @var array
+     */
+    private $options = array(
+        'Accept' => 'application/json',
+    );
+
+    /**
+     * Remote's server URI.
+     *
+     * @var string
+     */
     private $baseUri;
 
     /**
@@ -39,14 +52,18 @@ class RemoteClient extends BaseClient implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function call($endpoint = '/', array $arguments = array(), array $options = array())
-    {
+    public function call(
+        $endpoint = '/',
+        array $arguments = array(),
+        array $options = array(),
+        $fullResponse = false
+    ) {
         try {
             $response = $this->get(
                 $endpoint,
                 $this->process($arguments, $options)
             );
-        } catch (ConnectException $e) {
+        } catch (\Exception $e) {
             throw new ServiceUnavailableHttpException(
                 null,
                 'Could not resolve host: '.$this->baseUri,
@@ -55,7 +72,11 @@ class RemoteClient extends BaseClient implements ClientInterface
             );
         }
 
-        return $this->decode($response);
+        if ($fullResponse) {
+            return $this->decode($response);
+        }
+
+        return (string) $response->getBody();
     }
 
     private function process($arguments, $options)
@@ -70,10 +91,14 @@ class RemoteClient extends BaseClient implements ClientInterface
         return $this->options;
     }
 
-    private function decode($response)
+    private function decode(ResponseInterface $response)
     {
-        $body = (string) $response->getBody();
-
-        return (array) json_decode($body, true);
+        return array(
+            'headers' => $response->getHeaders(),
+            'status' => $response->getStatusCode(),
+            'reason' => $response->getReasonPhrase(),
+            'version' => $response->getProtocolVersion(),
+            'body' => (string) $response->getBody(),
+        );
     }
 }
