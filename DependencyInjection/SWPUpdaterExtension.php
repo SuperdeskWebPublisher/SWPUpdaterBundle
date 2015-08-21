@@ -34,6 +34,18 @@ class SWPUpdaterExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $supported = array(
+            'default' => 'SWP\UpdaterBundle\Client\DefaultClient',
+            'guzzle' => 'SWP\UpdaterBundle\Client\GuzzleClient',
+        );
+
+        list($class) = explode(':', $config['client']['type'], 2);
+        if (!isset($supported[$class])) {
+            throw new \LogicException(sprintf('Client "%s" is not supported for the UpdaterBundle.', $class));
+        }
+
+        $container->getDefinition('swp_updater.client')->setClass($supported[$class]);
+
         $clientConfig = array();
         if (!empty($config['client'])) {
             foreach (array('base_uri') as $key) {

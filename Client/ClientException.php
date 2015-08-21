@@ -11,12 +11,11 @@
  * @copyright 2015 Sourcefabric z.ú.
  * @license http://www.superdesk.org/license
  */
-
 namespace SWP\UpdaterBundle\Client;
 
 use Exception;
 
-class ConnectionException extends Exception
+class ClientException extends Exception
 {
     protected $errors;
 

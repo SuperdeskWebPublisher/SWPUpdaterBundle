@@ -62,7 +62,8 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
             'target_dir' => 'some/target/dir',
         );
 
-        $loader->load(array($directories), $container);
+        $config = $this->getConfig();
+        $loader->load(array(array_merge($config, $directories)), $container);
         $this->assertEquals(
             $container->getParameter('kernel.root_dir').'/some/temp/dir',
             $container->getParameter('swp_updater.temp_dir')
@@ -78,12 +79,13 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
-        $config = array(
+        $config = $this->getConfig();
+        $tempConfig = array(
             'version_class' => 'Acme\DemoBundle\Version\Version',
             'monolog_channel' => true,
         );
 
-        $loader->load(array($config), $container);
+        $loader->load(array(array_merge($config, $tempConfig)), $container);
         $this->assertTrue($container->hasParameter('swp_updater.monolog_channel'));
         $this->assertTrue($container->getParameter('swp_updater.monolog_channel'));
     }
@@ -113,6 +115,43 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
         );
 
         $loader->load(array($config), $container);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testLoadWhenClientTypeIsNotSupported()
+    {
+        $container = $this->createContainer();
+        $loader = $this->createLoader();
+
+        $tempConfig = array(
+            'client' => array(
+                'type' => 'some_fake_name',
+                'base_uri' => 'http://example.com',
+            ),
+        );
+
+        $config = $this->getConfig();
+        $loader->load(array(array_merge($config, $tempConfig)), $container);
+    }
+
+    public function testLoadWhenDefaultClientIsUsed()
+    {
+        $container = $this->createContainer();
+        $loader = $this->createLoader();
+        $config = $this->getConfig();
+        $tempConfig = array(
+            'client' => array(
+                'base_uri' => 'http://example.com',
+            ),
+        );
+
+        $loader->load(array(array_merge($config, $tempConfig)), $container);
+        $this->assertEquals(
+            $container->getDefinition('swp_updater.client')->getClass(),
+            "SWP\UpdaterBundle\Client\DefaultClient"
+        );
     }
 
     protected function createLoader()
