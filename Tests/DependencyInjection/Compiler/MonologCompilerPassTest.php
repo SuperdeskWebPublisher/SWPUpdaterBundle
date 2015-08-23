@@ -14,12 +14,14 @@
 namespace SWP\UpdaterBundle\Tests\DependencyInjection;
 
 use SWP\UpdaterBundle\DependencyInjection\Compiler\MonologCompilerPass;
+use Symfony\Component\DependencyInjection\Reference;
 
 class MonologCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
     private $container;
     private $definition;
     private $pass;
+
     public function setUp()
     {
         $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
@@ -50,7 +52,8 @@ class MonologCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->definition));
 
         $this->definition->expects($this->once())
-            ->method('addArgument');
+            ->method('addArgument')
+            ->with(new Reference('monolog.logger.updater'));
 
         $this->pass->process($this->container);
     }

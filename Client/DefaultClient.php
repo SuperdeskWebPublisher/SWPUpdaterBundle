@@ -13,13 +13,11 @@
  */
 namespace SWP\UpdaterBundle\Client;
 
-use GuzzleHttp\Client as BaseClient;
-
 /**
  * Default Client class.
  * Allows to fetch data from the remote update server.
  */
-class DefaultClient extends BaseClient implements ClientInterface
+class DefaultClient implements ClientInterface
 {
     /**
      * Default request options.
