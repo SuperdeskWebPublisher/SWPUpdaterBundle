@@ -59,6 +59,19 @@ class MonologCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\Compiler\MonologCompilerPass::process
+     */
+    public function testNoConfig()
+    {
+          $this->container->expects($this->once())
+            ->method('hasParameter')
+            ->with('swp_updater.monolog_channel')
+            ->will($this->returnValue(false));
+
+        $this->pass->process($this->container);
+    }
+
+    /**
      * @expectedException Symfony\Component\DependencyInjection\Exception\RuntimeException
      */
     public function testNoBundle()

@@ -44,7 +44,6 @@ class DefaultClient implements ClientInterface
      */
     public function __construct(array $config = array(), array $options = array())
     {
-        parent::__construct($config);
         $this->options = $options;
         $this->baseUri = $config['base_uri'];
     }
