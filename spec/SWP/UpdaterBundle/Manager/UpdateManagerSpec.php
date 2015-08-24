@@ -43,7 +43,6 @@ class UpdateManagerSpec extends ObjectBehavior
         $result = $this->getAvailableUpdates();
         $result->shouldHaveCount(1);
         $result->shouldBeArray();
-        var_dump()
         foreach ($result['core'] as $package) {
             $package->shouldHaveType('SWP\UpdaterBundle\Model\UpdatePackage');
         }
