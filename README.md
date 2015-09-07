@@ -231,3 +231,25 @@ monolog:
 ```
 
 For more details see the [Monolog documentation](http://symfony.com/doc/current/cookbook/logging/channels_handlers.html).
+
+#### Changing a client's type:
+
+SWPUpdaterBundle supports two clients to download the update packages from the update server:
+- PHP (file_get_contents)
+- Guzzle
+
+It is possible to change between these two clients, by simply defining the client's `type` in bundle configuration. Available types are:
+
+- guzzle
+- default
+
+When `type` is not defined, PHP (default) client will be used by default.
+
+```yaml
+# app/config/config.yml
+swp_updater:
+    version_class: %swp_updater.version.class%
+    client:
+        base_uri: http://example.com
+        type: guzzle # or default
+```

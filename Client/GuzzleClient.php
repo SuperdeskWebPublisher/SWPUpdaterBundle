@@ -84,9 +84,17 @@ class GuzzleClient extends BaseClient implements ClientInterface
      */
     public function saveFile($fromUrl, $filePath)
     {
-        $this->get($fromUrl, array(
-            'save_to' => $filePath,
-        ));
+        try {
+            $this->get($fromUrl, array(
+                'save_to' => $filePath,
+            ));
+
+            return true;
+        } catch (\Exception $e) {
+            unlink($filePath);
+
+            return false;
+        }
     }
 
     private function process($arguments, $options)

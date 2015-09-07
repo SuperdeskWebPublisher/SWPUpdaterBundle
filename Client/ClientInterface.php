@@ -41,6 +41,8 @@ interface ClientInterface
      *
      * @param string $fileUrl  Remote file url
      * @param string $filePath File path
+     *
+     * @return bool
      */
     public function saveFile($fileUrl, $filePath);
 }

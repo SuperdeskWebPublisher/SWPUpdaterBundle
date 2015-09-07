@@ -80,7 +80,15 @@ class DefaultClient implements ClientInterface
      */
     public function saveFile($fromUrl, $filePath)
     {
-        file_put_contents($filePath, fopen($fromUrl, 'r'));
+        $opened = @fopen($fromUrl, 'r');
+        if ($opened) {
+            $result = file_put_contents($filePath, $opened);
+            if ($result) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getBaseUrl()

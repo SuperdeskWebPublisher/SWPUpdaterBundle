@@ -13,6 +13,8 @@
  */
 namespace SWP\UpdaterBundle\Manager;
 
+use SWP\UpdaterBundle\Model\UpdatePackage;
+
 /**
  * Update manager interface.
  */
@@ -30,7 +32,7 @@ interface ManagerInterface
     /**
      * Gets the latest available update.
      *
-     * @return SWP\UpdaterBundle\Model\UpdatePackage latest update
+     * @return UpdatePackage latest update
      */
     public function getLatestUpdate();
 
