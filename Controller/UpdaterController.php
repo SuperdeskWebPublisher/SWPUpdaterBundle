@@ -11,7 +11,6 @@
  * @copyright 2015 Sourcefabric z.ú.
  * @license http://www.superdesk.org/license
  */
-
 namespace SWP\UpdaterBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
@@ -42,11 +41,11 @@ class UpdaterController extends FOSRestController
     public function downloadAction($resource)
     {
         $updater = $this->container->get('swp_updater.manager');
-        $updater->download($resource);
+        $downloadedUpdates = $updater->download($resource);
 
         return array(
             '_status' => 'OK',
-            '_items' => $updater->getAvailableUpdates(),
+            '_items' => $downloadedUpdates,
         );
     }
 

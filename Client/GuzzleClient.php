@@ -79,6 +79,16 @@ class GuzzleClient extends BaseClient implements ClientInterface
         return (string) $response->getBody();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function saveFile($fromUrl, $filePath)
+    {
+        $this->get($fromUrl, array(
+            'save_to' => $filePath,
+        ));
+    }
+
     private function process($arguments, $options)
     {
         if (!empty($options)) {

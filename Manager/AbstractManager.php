@@ -134,9 +134,7 @@ abstract class AbstractManager implements ManagerInterface
         try {
             $filePath = $this->tempDir.'/'.$name.'.zip';
             if (!file_exists($filePath)) {
-                $this->client->get($fromUrl, array(
-                    'save_to' => $filePath,
-                ));
+                $this->client->saveFile($fromUrl, $filePath);
 
                 $this->addLogInfo('Successfully downloaded update file: '.$filePath);
 

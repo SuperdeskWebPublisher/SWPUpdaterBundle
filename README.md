@@ -1,4 +1,9 @@
 # UpdaterBundle
+[![Build Status](https://travis-ci.org/SuperdeskWebPublisher/SWPUpdaterBundle.svg?branch=master)](https://travis-ci.org/SuperdeskWebPublisher/SWPUpdaterBundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SuperdeskWebPublisher/SWPUpdaterBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SuperdeskWebPublisher/SWPUpdaterBundle/?branch=master)
+[![Code Climate](https://codeclimate.com/github/SuperdeskWebPublisher/SWPUpdaterBundle/badges/gpa.svg)](https://codeclimate.com/github/SuperdeskWebPublisher/SWPUpdaterBundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/75867a30-2f5e-4b00-85d9-dd10a743042f/mini.png)](https://insight.sensiolabs.com/projects/75867a30-2f5e-4b00-85d9-dd10a743042f)
+
 Provides integration for [updater](https://github.com/ahilles107/updater) which gives an easy way to update your application.
 
 ## Installation
