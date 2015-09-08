@@ -3,9 +3,7 @@
 namespace spec\SWP\UpdaterBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use SWP\UpdaterBundle\Client\GuzzleClient;
 use Prophecy\Argument;
-use SWP\UpdaterBundle\Model\UpdatePackage;
 
 class UpdateManagerSpec extends ObjectBehavior
 {
@@ -17,12 +15,12 @@ class UpdateManagerSpec extends ObjectBehavior
 
     function let($client, $version)
     {
-    	$options = array(
-    		'temp_dir' => 'some/temp/dir',
-        	'target_dir' => 'some/target/dir'
-    	);
+        $options = array(
+            'temp_dir' => 'some/temp/dir',
+            'target_dir' => 'some/target/dir'
+        );
 
-    	$client->beADoubleOf('SWP\UpdaterBundle\Client\ClientInterface');
+        $client->beADoubleOf('SWP\UpdaterBundle\Client\ClientInterface');
         $version->beADoubleOf('SWP\UpdaterBundle\Version\VersionInterface');
         $this->beConstructedWith($client, $version, $options);
     }
@@ -32,12 +30,12 @@ class UpdateManagerSpec extends ObjectBehavior
         $client->call(Argument::Any(), Argument::Type('array'))->willReturn('{}');
 
         $this->shouldThrow('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-        	->duringGetAvailableUpdates();
+            ->duringGetAvailableUpdates();
     }
 
     function it_gets_available_updates($client)
     {
-    	$fakeResponse = '{"_items":{"core":[{"version":"0.2.1","changelog":["commit1"]},{"version":"0.2.0"}]}}';
+        $fakeResponse = '{"_items":{"core":[{"version":"0.2.1","changelog":["commit1"]},{"version":"0.2.0"}]}}';
         $client->call(Argument::Any(), Argument::Type('array'))->willReturn($fakeResponse);
 
         $result = $this->getAvailableUpdates();
@@ -47,6 +45,4 @@ class UpdateManagerSpec extends ObjectBehavior
             $package->shouldHaveType('SWP\UpdaterBundle\Model\UpdatePackage');
         }
     }
-
-
 }

@@ -1,4 +1,9 @@
 # UpdaterBundle
+[![Build Status](https://travis-ci.org/SuperdeskWebPublisher/SWPUpdaterBundle.svg?branch=master)](https://travis-ci.org/SuperdeskWebPublisher/SWPUpdaterBundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SuperdeskWebPublisher/SWPUpdaterBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SuperdeskWebPublisher/SWPUpdaterBundle/?branch=master)
+[![Code Climate](https://codeclimate.com/github/SuperdeskWebPublisher/SWPUpdaterBundle/badges/gpa.svg)](https://codeclimate.com/github/SuperdeskWebPublisher/SWPUpdaterBundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/75867a30-2f5e-4b00-85d9-dd10a743042f/mini.png)](https://insight.sensiolabs.com/projects/75867a30-2f5e-4b00-85d9-dd10a743042f)
+
 Provides integration for [updater](https://github.com/ahilles107/updater) which gives an easy way to update your application.
 
 ## Installation
@@ -226,3 +231,25 @@ monolog:
 ```
 
 For more details see the [Monolog documentation](http://symfony.com/doc/current/cookbook/logging/channels_handlers.html).
+
+#### Changing a client's type:
+
+SWPUpdaterBundle supports two clients to download the update packages from the update server:
+- PHP (file_get_contents)
+- Guzzle
+
+It is possible to change between these two clients, by simply defining the client's `type` in bundle configuration. Available types are:
+
+- guzzle
+- default
+
+When `type` is not defined, PHP (default) client will be used by default.
+
+```yaml
+# app/config/config.yml
+swp_updater:
+    version_class: %swp_updater.version.class%
+    client:
+        base_uri: http://example.com
+        type: guzzle # or default
+```

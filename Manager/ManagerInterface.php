@@ -11,8 +11,9 @@
  * @copyright 2015 Sourcefabric z.ú.
  * @license http://www.superdesk.org/license
  */
-
 namespace SWP\UpdaterBundle\Manager;
+
+use SWP\UpdaterBundle\Model\UpdatePackage;
 
 /**
  * Update manager interface.
@@ -31,7 +32,7 @@ interface ManagerInterface
     /**
      * Gets the latest available update.
      *
-     * @return string latest update
+     * @return UpdatePackage latest update
      */
     public function getLatestUpdate();
 

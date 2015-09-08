@@ -24,10 +24,10 @@ interface ClientInterface
      *
      * @param string $endpoint     API endpoint to call
      * @param array  $arguments    An array of arguments
-     * @param arrat  $options      An array of extra parameters
+     * @param array  $options      An array of extra parameters
      * @param bool   $fullResponse Return full reponse as array
      *
-     * @return array Response from the server
+     * @return array|string Response from the server
      */
     public function call(
         $endpoint = '/',
@@ -35,4 +35,14 @@ interface ClientInterface
         array $options = array(),
         $fullResponse = false
     );
+
+    /**
+     * Saves remote file from the specified url into defined path.
+     *
+     * @param string $fileUrl  Remote file url
+     * @param string $filePath File path
+     *
+     * @return bool
+     */
+    public function saveFile($fileUrl, $filePath);
 }

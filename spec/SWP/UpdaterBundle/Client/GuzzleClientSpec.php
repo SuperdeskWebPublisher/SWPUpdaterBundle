@@ -99,4 +99,17 @@ class GuzzleClientSpec extends ObjectBehavior
         $response = $this->call('/response-headers', $arguments);
         $response->shouldBeString();
     }
+
+    function it_should_save_the_file()
+    {
+        $filePath = __DIR__.'/../../../file.png';
+        $response = $this->saveFile('http://httpbin.org/image/png', $filePath);
+        $response->shouldBe(true);
+    }
+
+    function it_should_not_save_the_file()
+    {
+        $response = $this->saveFile('fake_url', __DIR__.'/../../../file.png');
+        $response->shouldBe(false);
+    }
 }

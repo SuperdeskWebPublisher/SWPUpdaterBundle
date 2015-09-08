@@ -75,6 +75,22 @@ class DefaultClient implements ClientInterface
         return $response;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function saveFile($fromUrl, $filePath)
+    {
+        $opened = @fopen($fromUrl, 'r');
+        if ($opened) {
+            $result = file_put_contents($filePath, $opened);
+            if ($result) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function getBaseUrl()
     {
         return rtrim($this->baseUri, '/');
@@ -103,15 +119,10 @@ class DefaultClient implements ClientInterface
 
     private function processOptions($options)
     {
-        // Override class defaults
         if (is_array($options)) {
             $options = array_merge($this->options, $options);
         } else {
             $options = $this->options;
-        }
-        // Add options from config
-        if (isset($this->config['options']) && is_array($this->config['options'])) {
-            $options = array_merge((array) $options, $this->config['options']);
         }
 
         return $options;
