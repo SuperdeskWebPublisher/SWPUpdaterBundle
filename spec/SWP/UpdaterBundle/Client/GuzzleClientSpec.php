@@ -15,6 +15,11 @@ namespace spec\SWP\UpdaterBundle\Client;
 
 use PhpSpec\ObjectBehavior;
 
+/**
+ * PHP >= 5.5.0
+ *
+ * @require GuzzleHttp\Client
+ */
 class GuzzleClientSpec extends ObjectBehavior
 {
     function it_is_initializable()
@@ -25,8 +30,8 @@ class GuzzleClientSpec extends ObjectBehavior
 
     function let()
     {
-    	$config = array('base_uri' => 'http://httpbin.org');
-    	$this->beConstructedWith($config);
+        $config = array('base_uri' => 'http://httpbin.org');
+        $this->beConstructedWith($config);
     }
 
     function it_should_make_a_call_to_remote_server()
@@ -64,7 +69,7 @@ class GuzzleClientSpec extends ObjectBehavior
         $response['body']->shouldBeString();
     }
 
-    function it_should_be_able_to_return_xml_format()
+    function it_returns_response_in_xml_format()
     {
         $options = array(
             'options' => array(
@@ -90,7 +95,7 @@ class GuzzleClientSpec extends ObjectBehavior
         $response['body']->shouldBeString();
     }
 
-    function it_should_be_able_to_accept_query_parameters_as_array()
+    function it_accepts_query_parameters_as_array()
     {
         $arguments = array(
             'Server' => 'httpbin'

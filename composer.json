@@ -12,20 +12,23 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.4",
         "symfony/framework-bundle": "~2.0",
         "friendsofsymfony/rest-bundle": "^1.7.1",
         "ahilles107/updater": "1.0.x-dev",
         "jms/serializer-bundle": "^1.0",
         "vierbergenlars/php-semver": "^3.0",
-        "guzzlehttp/guzzle": "^6.0",
         "nelmio/api-doc-bundle": "@stable",
         "willdurand/hateoas-bundle": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5@stable",
         "phpunit/php-code-coverage": "@stable",
-        "phpspec/phpspec": "~2.0"
+        "phpspec/phpspec": "~2.0",
+        "akeneo/phpspec-skip-example-extension": "^1.2@dev"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "Allows to send more advanced HTTP requests (requires PHP >= 5.5.0)"
     },
     "autoload": {
         "psr-4": { "SWP\\UpdaterBundle\\": "" }

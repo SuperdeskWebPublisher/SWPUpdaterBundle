@@ -23,6 +23,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
      * @covers SWP\UpdaterBundle\SWPUpdaterBundle
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
      * @covers SWP\UpdaterBundle\DependencyInjection\Configuration::getConfigTreeBuilder
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoad()
     {
@@ -52,6 +53,10 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($container->hasParameter('swp_updater.monolog_channel'));
     }
 
+    /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
+     */
     public function testLoadWhenTempDirAndTargetDirAreSet()
     {
         $container = $this->createContainer();
@@ -75,7 +80,11 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testLoadWhenMonologChannelIsSet()
+    /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
+     */
+    public function testLoadIfMonologChannelDefined()
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
@@ -91,6 +100,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testLoadWhenVersionClassIsRequired()
@@ -102,6 +112,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testLoadWhenClientBaseUriIsRequiredAndCannotBeEmpty()
@@ -118,6 +129,8 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      * @expectedException \LogicException
      */
     public function testLoadWhenClientTypeIsNotSupported()
@@ -136,7 +149,39 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
         $loader->load(array(array_merge($config, $tempConfig)), $container);
     }
 
-    public function testLoadWhenDefaultClientIsUsed()
+    /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
+     * @expectedException \LogicException
+     */
+    public function testLoadWhenGuzzleIsNotInstalledButUsed()
+    {
+        $container = $this->createContainer();
+        $loader = $this->createLoader();
+
+        $tempConfig = array(
+            'client' => array(
+                'type' => 'guzzle',
+                'base_uri' => 'http://example.com',
+            ),
+        );
+
+        $config = $this->getConfig();
+        $loader->load(array(array_merge($config, $tempConfig)), $container);
+
+        $stub = $this->getMock('SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension', array('get'));
+        $stub->expects($this->at(0))
+            ->method('get')
+            ->will($this->throwException(new \LogicException('error')));
+
+        $this->assertFalse($stub->get());
+    }
+
+    /**
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
+     */
+    public function testLoadForDefaultClient()
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
