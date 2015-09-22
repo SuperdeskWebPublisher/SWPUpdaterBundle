@@ -198,12 +198,14 @@ class UpdateManager extends AbstractManager
             ));
 
             if ($result !== 0) {
-                throw new \RuntimeException('Could not update the instance.');
+                $this->addLogInfo($result);
+
+                throw new \RuntimeException('Could not update the instance. See logs for more details.');
             }
 
             $this->addLogInfo('Successfully updated application\'s core...');
 
-            $this->cleanUp($packagePath);
+            //$this->cleanUp($packagePath);
         }
     }
 

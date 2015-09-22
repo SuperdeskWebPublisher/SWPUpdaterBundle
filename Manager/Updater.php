@@ -11,12 +11,11 @@
  * @copyright 2015 Sourcefabric z.ú.
  * @license http://www.superdesk.org/license
  */
-
 namespace SWP\UpdaterBundle\Manager;
 
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
 use Updater\Console\Application;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * Updater wrapper.
@@ -30,11 +29,11 @@ class Updater
      *
      * @param array $parameters Command parameters
      *
-     * @return string Command output
+     * @return string|int Command output
      */
     public static function runUpdateCommand(array $parameters = array())
     {
-        $parameters['command'] = self::UPDATE_COMMAND;
+        $parameters = array('command' => self::UPDATE_COMMAND) + $parameters;
 
         return self::runCommand($parameters);
     }
@@ -42,10 +41,15 @@ class Updater
     private static function runCommand(array $parameters = array())
     {
         $input = new ArrayInput($parameters);
-        $output = new NullOutput();
+        $output = new BufferedOutput();
         $app = new Application();
         $app->setAutoExit(false);
 
-        return $app->run($input, $output);
+        $result = $app->run($input, $output);
+        if ($result !== 0) {
+            return $output->fetch();
+        }
+
+        return $result;
     }
 }
