@@ -42,10 +42,10 @@ class UpdaterController extends FOSRestController
         $updater = $this->container->get('swp_updater.manager');
         $downloadedUpdates = $updater->download($resource);
 
-        return $this->handleView(View::create([
+        return $this->handleView(View::create(array(
             '_status' => 'OK',
             '_items' => $downloadedUpdates,
-        ], 200));
+        ), 200));
     }
 
     /**
@@ -71,12 +71,12 @@ class UpdaterController extends FOSRestController
         $updater = $this->container->get('swp_updater.manager');
         $updater->applyUpdates($resource);
 
-        return $this->handleView(View::create([
+        return $this->handleView(View::create(array(
             '_status' => 'OK',
             '_items' => $updater->getAvailableUpdates(),
             'previous_version' => $updater->getCurrentVersion(),
             'current_version' => $updater->getLatestVersion(),
-        ], 200));
+        ), 200));
     }
 
     /**
@@ -101,9 +101,9 @@ class UpdaterController extends FOSRestController
     {
         $updater = $this->container->get('swp_updater.manager');
 
-        return $this->handleView(View::create([
+        return $this->handleView(View::create(array(
             '_items' => $updater->getAvailableUpdates($channel),
-        ], 200));
+        ), 200));
     }
 
     /**
