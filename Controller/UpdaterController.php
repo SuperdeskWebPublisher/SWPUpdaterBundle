@@ -17,7 +17,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 
 class UpdaterController extends FOSRestController
 {
@@ -36,17 +36,16 @@ class UpdaterController extends FOSRestController
      * )
      * @Route("/api/updates/download/{resource}", options={"expose"=true})
      * @Method("GET")
-     * @Rest\View(statusCode=200)
      */
     public function downloadAction($resource)
     {
         $updater = $this->container->get('swp_updater.manager');
         $downloadedUpdates = $updater->download($resource);
 
-        return array(
+        return $this->handleView(View::create(array(
             '_status' => 'OK',
             '_items' => $downloadedUpdates,
-        );
+        ), 200));
     }
 
     /**
@@ -66,19 +65,18 @@ class UpdaterController extends FOSRestController
      * )
      * @Route("/api/updates/install/{resource}", options={"expose"=true})
      * @Method("POST")
-     * @Rest\View()
      */
     public function installAction($resource)
     {
         $updater = $this->container->get('swp_updater.manager');
         $updater->applyUpdates($resource);
 
-        return array(
+        return $this->handleView(View::create(array(
             '_status' => 'OK',
             '_items' => $updater->getAvailableUpdates(),
             'previous_version' => $updater->getCurrentVersion(),
             'current_version' => $updater->getLatestVersion(),
-        );
+        ), 200));
     }
 
     /**
@@ -98,15 +96,14 @@ class UpdaterController extends FOSRestController
      * )
      * @Route("/api/updates/{channel}", options={"expose"=true})
      * @Method("GET")
-     * @Rest\View(statusCode=200)
      */
     public function getAction($channel = '')
     {
         $updater = $this->container->get('swp_updater.manager');
 
-        return array(
+        return $this->handleView(View::create(array(
             '_items' => $updater->getAvailableUpdates($channel),
-        );
+        ), 200));
     }
 
     /**
@@ -119,12 +116,11 @@ class UpdaterController extends FOSRestController
      * )
      * @Route("/api/updates/latest/", options={"expose"=true})
      * @Method("GET")
-     * @Rest\View(statusCode=200)
      */
     public function latestAction()
     {
         $updater = $this->container->get('swp_updater.manager');
 
-        return $updater->getLatestUpdate();
+        return $this->handleView(View::create($updater->getLatestUpdate(), 200));
     }
 }
